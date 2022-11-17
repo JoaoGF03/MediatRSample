@@ -2,7 +2,7 @@ using MediatRSample.Application.Models;
 
 namespace MediatRSample.Repositories
 {
-  public class PessoaRepository : IRepository<Pessoa>
+  public class PessoaRepository : IPessoaRepository<Pessoa>
   {
     private static Dictionary<int, Pessoa> pessoas = new Dictionary<int, Pessoa>();
 
@@ -39,6 +39,11 @@ namespace MediatRSample.Repositories
     public async Task Delete(int id)
     {
       await Task.Run(() => pessoas.Remove(id));
+    }
+
+    public async Task<Pessoa> GetByNome(string nome)
+    {
+      return await Task.Run(() => pessoas.Values.FirstOrDefault(x => x.Nome == nome));
     }
   }
 }

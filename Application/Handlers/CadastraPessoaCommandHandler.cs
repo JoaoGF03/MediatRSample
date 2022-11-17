@@ -9,8 +9,8 @@ namespace MediatRSample.Application.Handlers
   public class CadastraPessoaCommandHandler : IRequestHandler<CadastraPessoaCommand, string>
   {
     private readonly IMediator _mediator;
-    private readonly IRepository<Pessoa> _repository;
-    public CadastraPessoaCommandHandler(IMediator mediator, IRepository<Pessoa> repository)
+    private readonly IPessoaRepository<Pessoa> _repository;
+    public CadastraPessoaCommandHandler(IMediator mediator, IPessoaRepository<Pessoa> repository)
     {
       this._mediator = mediator;
       this._repository = repository;
@@ -18,10 +18,22 @@ namespace MediatRSample.Application.Handlers
 
     public async Task<string> Handle(CadastraPessoaCommand request, CancellationToken cancellationToken)
     {
+      if (
+        string.IsNullOrEmpty(request.Nome)
+       || request.Idade == 0
+       || !char.IsLetter(request.Sexo)
+       )
+        return "Preencha todos os campos";
+
       var pessoa = new Pessoa { Nome = request.Nome, Idade = request.Idade, Sexo = request.Sexo };
 
       try
       {
+        var pessoaExiste = await _repository.GetByNome(request.Nome);
+
+        if (pessoaExiste != null)
+          return "Pessoa já cadastrada";
+
         pessoa = await _repository.Add(pessoa);
 
         await _mediator.Publish(new PessoaCriadaNotification { Id = pessoa.Id, Nome = pessoa.Nome, Idade = pessoa.Idade, Sexo = pessoa.Sexo });

@@ -11,9 +11,9 @@ namespace MediatRSample.Controllers
   public class PessoaController : ControllerBase
   {
     private readonly IMediator _mediator;
-    private readonly IRepository<Pessoa> _repository;
+    private readonly IPessoaRepository<Pessoa> _repository;
 
-    public PessoaController(IMediator mediator, IRepository<Pessoa> repository)
+    public PessoaController(IMediator mediator, IPessoaRepository<Pessoa> repository)
     {
       this._mediator = mediator;
       this._repository = repository;
@@ -35,6 +35,13 @@ namespace MediatRSample.Controllers
     public async Task<IActionResult> Post(CadastraPessoaCommand command)
     {
       var response = await _mediator.Send(command);
+
+      if (response == "Pessoa já cadastrada")
+        return Conflict(response);
+
+      if (response == "Preencha todos os campos")
+        return BadRequest(response);
+
       return Ok(response);
     }
 

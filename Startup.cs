@@ -18,7 +18,7 @@ namespace MediatRSample
     {
       services.AddControllers();
       services.AddMediatR(typeof(Startup));
-      services.AddSingleton<IRepository<Pessoa>, PessoaRepository>();
+      services.AddSingleton<IPessoaRepository<Pessoa>, PessoaRepository>();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -9,8 +9,8 @@ namespace MediatRSample.Application.Handlers
   public class ExcluiPessoaCommandHandler : IRequestHandler<ExcluiPessoaCommand, string>
   {
     private readonly IMediator _mediator;
-    private readonly IRepository<Pessoa> _repository;
-    public ExcluiPessoaCommandHandler(IMediator mediator, IRepository<Pessoa> repository)
+    private readonly IPessoaRepository<Pessoa> _repository;
+    public ExcluiPessoaCommandHandler(IMediator mediator, IPessoaRepository<Pessoa> repository)
     {
       this._mediator = mediator;
       this._repository = repository;

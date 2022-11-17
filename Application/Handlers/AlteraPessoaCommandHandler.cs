@@ -9,8 +9,8 @@ namespace MediatRSample.Application.Handlers
   public class AlteraPessoaCommandHandler : IRequestHandler<AlteraPessoaCommand, string>
   {
     private readonly IMediator _mediator;
-    private readonly IRepository<Pessoa> _repository;
-    public AlteraPessoaCommandHandler(IMediator mediator, IRepository<Pessoa> repository)
+    private readonly IPessoaRepository<Pessoa> _repository;
+    public AlteraPessoaCommandHandler(IMediator mediator, IPessoaRepository<Pessoa> repository)
     {
       this._mediator = mediator;
       this._repository = repository;
